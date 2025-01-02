@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\MyGamesController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SignUpController;
 use Illuminate\Http\Request;
@@ -16,4 +17,7 @@ Route::group(["prefix" => 'v1'], function () {
 
     Route::get('/games', [GamesController::class, 'search_games'])->middleware('auth:sanctum');
 
+    Route::resource('my_games', MyGamesController::class)->only([
+        'store'
+    ])->middleware('auth:sanctum');
 });
