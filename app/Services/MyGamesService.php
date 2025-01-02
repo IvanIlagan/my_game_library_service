@@ -11,11 +11,20 @@ class MyGamesService {
 
         $game = new GameDetail($params);
 
-        if ($game->save()) {
+        if (($this->find_game_by_game_id($game->gb_game_id) != null) || $game->save()) {
             $player_owned_game = new PlayerOwnedGame([
                 "player_id" => $user_id,
-                "game_id" => $game->id
+                "game_id" => $game->gb_game_id
             ]);
+
+            if ($this->find_owned_game($user_id, $game->gb_game_id) != null) {
+                return $this->create_return_data(
+                    result: '',
+                    successful: false,
+                    error: [ "error" => "Game already added"]
+                );
+            }
+
 
             if ($player_owned_game->save()) {
                 return $this->create_return_data(result: $player_owned_game);
@@ -23,14 +32,14 @@ class MyGamesService {
                 return $this->create_return_data(
                     result: '',
                     successful: false,
-                    error: 'Creation Failed'
+                    error: [ "error" => "Creation Failed"]
                 );
             }
         } else {
             return $this->create_return_data(
                 result: '',
                 successful: false,
-                error: 'Creation Failed'
+                error: [ "error" => "Creation Failed"]
             );
         }
     }
@@ -42,5 +51,15 @@ class MyGamesService {
         $struct->error = $error;
 
         return $struct;
+    }
+
+    private function find_game_by_game_id($game_id) {
+        return (new GameDetail)->where("gb_game_id", "=", $game_id)->first();
+    }
+
+    private function find_owned_game($user_id, $game_id) {
+        return (new PlayerOwnedGame)->where("game_id", "=", $game_id)
+                                    ->where("player_id", "=", $user_id)
+                                    ->first();
     }
 }

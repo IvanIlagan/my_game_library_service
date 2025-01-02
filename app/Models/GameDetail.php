@@ -10,7 +10,8 @@ class GameDetail extends Model
         'name',
         'description',
         'platforms',
-        'image_url'
+        'image_url',
+        'gb_game_id'
     ];
 
     protected function casts(): array

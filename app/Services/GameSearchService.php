@@ -25,7 +25,8 @@ class GameSearchService {
                     "name" => $item["name"],
                     "description" => $item["description"],
                     "image_url" => $item["image"]["original_url"],
-                    "platforms" => $this->extract_platform_names($item["platforms"])
+                    "platforms" => $this->extract_platform_names($item["platforms"]),
+                    "gb_game_id" => $item["guid"]
                 ];
             }, $response["data"]);
 
