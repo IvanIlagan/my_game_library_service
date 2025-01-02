@@ -24,7 +24,8 @@ class GameSearchService {
                 return [
                     "name" => $item["name"],
                     "description" => $item["description"],
-                    "imageUrl" => $item["image"]["original_url"]
+                    "image_url" => $item["image"]["original_url"],
+                    "platforms" => $this->extract_platform_names($item["platforms"])
                 ];
             }, $response["data"]);
 
@@ -36,5 +37,11 @@ class GameSearchService {
         }
 
         return $this;
+    }
+
+    private function extract_platform_names(array $platforms) {
+        return array_map(function ($item) {
+            return $item["name"];
+        }, $platforms);
     }
 }
