@@ -15,7 +15,8 @@ class MyGamesController extends Controller
             'name' => ['required'],
             'description' => ['required'],
             'platforms' => ['required'],
-            'image_url' => ['required']
+            'image_url' => ['required'],
+            'gb_game_id' => ['required']
         ]);
 
         if ($validator->passes()) {
