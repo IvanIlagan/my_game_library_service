@@ -26,7 +26,8 @@ class GameDatabaseApi {
         // NOTE: API does a fuzzy search itself. so the user can just search normally
         $filters = [
             "limit" => 20,
-            "filter" => "name:{$name}"
+            "filter" => "name:{$name}",
+            "sort" => "name:asc"
         ];
 
         $response = Http::get($endpoint, array_merge($this->params, $filters));
