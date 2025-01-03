@@ -23,7 +23,7 @@ class GameSearchService {
             $games = array_map(function ($item) {
                 return [
                     "name" => $item["name"],
-                    "description" => $item["description"],
+                    "description" => $item["deck"],
                     "image_url" => $item["image"]["original_url"],
                     "platforms" => $this->extract_platform_names($item["platforms"]),
                     "gb_game_id" => $item["guid"]
