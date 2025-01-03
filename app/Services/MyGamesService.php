@@ -54,11 +54,41 @@ class MyGamesService {
         return  $this->create_return_data(result: $query);
     }
 
-    private function create_return_data($result, $successful = true, $error = null) {
+    public function get_my_game(string $game_id, int $user_id) {
+        $selected_columns = [
+            "game_details.name",
+            "game_details.image_url",
+            "game_details.description",
+            "player_owned_games.rating",
+            "player_owned_games.review",
+            "player_owned_games.is_finished",
+            "player_owned_games.times_played"
+        ];
+
+        $query = (new PlayerOwnedGame)->select($selected_columns)
+                                    ->join("game_details", "game_details.gb_game_id", "=", "player_owned_games.game_id")
+                                    ->where("player_owned_games.player_id", "=", $user_id)
+                                    ->where("player_owned_games.game_id", "=", $game_id)
+                                    ->first();
+
+        if ($query != null) {
+            return  $this->create_return_data(result: $query);
+        } else {
+            return  $this->create_return_data(
+                result: '',
+                successful: false,
+                error: 'Owned game not found.',
+                error_http_status: 404
+            );
+        }
+    }
+
+    private function create_return_data($result, $successful = true, $error = null, $error_http_status = null) {
         $struct = new stdClass ;
         $struct->successful = $successful;
         $struct->result = $result;
         $struct->error = $error;
+        $struct->error_status = $error_http_status;
 
         return $struct;
     }

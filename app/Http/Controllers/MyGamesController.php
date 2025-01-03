@@ -51,4 +51,23 @@ class MyGamesController extends Controller
             ], 422);
         }
     }
+
+    public function show(Request $request, $my_game): JsonResponse
+    {
+        if ($my_game != null) {
+            $service = (new MyGamesService())->get_my_game($my_game, Auth::user()->id);
+
+            if ($service->successful) {
+                $resp = response()->json($service->result);
+            } else {
+                $resp = response()->json($service->error, $service->error_status ?? 422);
+            }
+
+            return $resp;
+        } else {
+            return response()->json([
+                'error' => 'Data invalid'
+            ], 422);
+        }
+    }
 }
