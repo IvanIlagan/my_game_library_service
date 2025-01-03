@@ -44,6 +44,16 @@ class MyGamesService {
         }
     }
 
+    public function get_my_games(int $user_id) {
+        $query = (new PlayerOwnedGame)->select(["player_owned_games.game_id AS gb_game_id", "game_details.name AS name", "game_details.image_url"])
+                             ->join("game_details", "game_details.gb_game_id", "=", "player_owned_games.game_id")
+                             ->where("player_owned_games.player_id", "=", $user_id)
+                             ->orderBy("player_owned_games.created_at", "asc")
+                             ->get();
+
+        return  $this->create_return_data(result: $query);
+    }
+
     private function create_return_data($result, $successful = true, $error = null) {
         $struct = new stdClass ;
         $struct->successful = $successful;
