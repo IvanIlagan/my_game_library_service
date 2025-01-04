@@ -83,6 +83,29 @@ class MyGamesService {
         }
     }
 
+    public function update_my_game_details($details, string $game_id, int $user_id) {
+        $game = $this->find_owned_game($user_id, $game_id);
+
+        if ($game == null) {
+            return  $this->create_return_data(
+                result: '',
+                successful: false,
+                error: 'Owned game not found.',
+                error_http_status: 404
+            );
+        } 
+
+        if ($game->update($details)) {
+            return  $this->create_return_data(result: '');
+        } else {
+            return  $this->create_return_data(
+                result: '',
+                successful: false,
+                error: 'Unable to update owned game'
+            );
+        }
+    }
+
     public function delete_my_game(string $game_id, int $user_id) {
         $query = $this->find_owned_game($user_id, $game_id);
 
