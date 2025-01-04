@@ -12,8 +12,8 @@ class MyGamesController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-
-        $service = (new MyGamesService())->get_my_games(Auth::user()->id);
+        $params = $request->only(["name"]);
+        $service = (new MyGamesService())->get_my_games($params, Auth::user()->id);
 
         if ($service->successful) {
             $resp = response()->json($service->result);
