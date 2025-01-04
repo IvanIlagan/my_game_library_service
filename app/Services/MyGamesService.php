@@ -83,6 +83,30 @@ class MyGamesService {
         }
     }
 
+    public function delete_my_game(string $game_id, int $user_id) {
+        $query = $this->find_owned_game($user_id, $game_id);
+
+        if ($query != null) {
+            if (!$query->delete()) {
+                return  $this->create_return_data(
+                    result: '',
+                    successful: false,
+                    error: 'Unable to delete owned game'
+                );
+            }
+
+            return  $this->create_return_data(result: null);
+            
+        } else {
+            return  $this->create_return_data(
+                result: '',
+                successful: false,
+                error: 'Owned game not found.',
+                error_http_status: 404
+            );
+        }
+    }
+
     private function create_return_data($result, $successful = true, $error = null, $error_http_status = null) {
         $struct = new stdClass ;
         $struct->successful = $successful;

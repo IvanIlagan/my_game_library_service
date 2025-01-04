@@ -70,4 +70,23 @@ class MyGamesController extends Controller
             ], 422);
         }
     }
+
+    public function destroy(Request $request, $my_game)
+    {
+        if ($my_game != null) {
+            $service = (new MyGamesService())->delete_my_game($my_game, Auth::user()->id);
+
+            if ($service->successful) {
+                $resp = response()->noContent();
+            } else {
+                $resp = response()->json($service->error, $service->error_status ?? 422);
+            }
+
+            return $resp;
+        } else {
+            return response()->json([
+                'error' => 'Data invalid'
+            ], 422);
+        }
+    }
 }
