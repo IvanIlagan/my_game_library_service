@@ -71,6 +71,26 @@ class MyGamesController extends Controller
         }
     }
 
+    public function update(Request $request, $my_game) {
+        $params = $request->only(["rating", "review", "is_finished", "times_played"]);
+
+        if ($my_game != null) {
+            $service = (new MyGamesService())->update_my_game_details($params, $my_game, Auth::user()->id);
+
+            if ($service->successful) {
+                $resp = response()->noContent();
+            } else {
+                $resp = response()->json($service->error, $service->error_status ?? 422);
+            }
+
+            return $resp;
+        } else {
+            return response()->json([
+                'error' => 'Data invalid'
+            ], 422);
+        }
+    }
+
     public function destroy(Request $request, $my_game)
     {
         if ($my_game != null) {

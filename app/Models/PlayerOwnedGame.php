@@ -8,6 +8,10 @@ class PlayerOwnedGame extends Model
 {
     protected $fillable = [
         'player_id',
-        'game_id'
+        'game_id',
+        'rating',
+        'review',
+        'times_played',
+        'is_finished'
     ];
 }

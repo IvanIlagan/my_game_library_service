@@ -18,6 +18,6 @@ Route::group(["prefix" => 'v1'], function () {
     Route::get('/games', [GamesController::class, 'search_games'])->middleware('auth:sanctum');
 
     Route::resource('my_games', MyGamesController::class)->only([
-        'index', 'store', 'show', 'destroy'
+        'index', 'store', 'show', 'destroy',  'update'
     ])->middleware('auth:sanctum');
 });
