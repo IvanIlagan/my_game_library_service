@@ -14,4 +14,11 @@ class PlayerOwnedGame extends Model
         'times_played',
         'is_finished'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'date'
+        ];
+    }
 }
